@@ -18,9 +18,9 @@ restService.post('/hook', function (request, result) {
         //if the request is true do something
         if (request.body) {
             var requestBody = request.body;
-
+        
             if (requestBody.result) {
-                speech = requestBody.result.parameters.geo-city;
+                speech = '';
 
                 if (requestBody.result.fulfillment) {
                     speech += requestBody.result.fulfillment.speech;
