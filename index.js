@@ -7,18 +7,20 @@ const bodyParser = require('body-parser');
 const restService = express();
 restService.use(bodyParser.json());
 
-restService.post('/hook', function (req, res) {
+restService.post('/hook', function (request, result) {
 
     console.log('hook request');
 
     try {
-        var speech = 'empty speech';
+        //initialise value to pass back
 
-        if (req.body) {
-            var requestBody = req.body;
+        var speech = '';
+        //if the request is true do something
+        if (request.body) {
+            var requestBody = request.body;
 
             if (requestBody.result) {
-                speech = '';
+                speech = requestBody.result.parameters.geo-city;
 
                 if (requestBody.result.fulfillment) {
                     speech += requestBody.result.fulfillment.speech;
@@ -33,7 +35,7 @@ restService.post('/hook', function (req, res) {
 
         console.log('result: ', speech);
 
-        return res.json({
+        return result.json({
             speech: speech,
             displayText: speech,
             source: 'apiai-webhook-sample'
@@ -41,7 +43,7 @@ restService.post('/hook', function (req, res) {
     } catch (err) {
         console.error("Can't process request", err);
 
-        return res.status(400).json({
+        return result.status(400).json({
             status: {
                 code: 400,
                 errorType: err.message
